@@ -1,0 +1,11 @@
+<ul class="steps">
+  @for (step of steps(); track step; let i = $index) {
+    <li class="step" [ngClass]="{'step-success font-bold text-green-500': i < currentStep()}">{{ step }}</li>
+  }
+</ul>
+
+<div class="divider"></div>
+
+<section>
+  <ng-content></ng-content>
+</section>
