@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NgClass } from '@angular/common';
-import { BasicStepperContainer } from '../basic-stepper-container/basic-stepper-container.component';
+import { StepperContainer } from '../stepper-container/stepper-container.component';
 
 @Component({
   selector: 'app-stepper-shower',
-  imports: [BasicStepperContainer],
+  imports: [StepperContainer],
   templateUrl: './stepper-shower.html',
   styleUrl: './stepper-shower.scss',
 })

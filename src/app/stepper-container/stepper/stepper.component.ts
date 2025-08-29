@@ -2,12 +2,12 @@ import { Component, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-basic-stepper',
+  selector: 'app-stepper',
   imports: [NgClass],
-  templateUrl: './basic-stepper.html',
-  styleUrl: './basic-stepper.scss',
+  templateUrl: './stepper.component.html',
+  styleUrl: './stepper.component.scss',
 })
-export class BasicStepper {
+export class Stepper {
   currentStep = input.required<number>();
   steps = input.required<string[]>();
 }
