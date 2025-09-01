@@ -2,10 +2,11 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "emitDecoratorMetadata": false,
-    "target": "es2022",
+    "target": "ESNext",
     "module": "preserve",
-    "lib": ["es2020", "dom"],
+    "lib": ["ESNext", "dom"],
     "paths": {},
+    "strict": true,
     "isolatedModules": true
   },
   "angularCompilerOptions": {
