@@ -1,5 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, contentChildren, effect, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { Step } from '../model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-stepper',
@@ -8,6 +10,31 @@ import { NgClass } from '@angular/common';
   styleUrl: './stepper.component.scss',
 })
 export class Stepper {
-  currentStep = input.required<number>();
-  steps = input.required<string[]>();
+  protected steps = contentChildren<Step>(Step);
+
+  currentStep = signal(0);
+
+  constructor() {
+    effect((onCleanup) => {
+      const currentIndex = this.currentStep();
+      const steps = this.steps();
+      const clearObs = new Subject<void>();
+
+      steps.forEach((step, index) => {
+        step.visible.set(index === currentIndex);
+        step.inc
+          .pipe(takeUntil(clearObs))
+          .subscribe((inc) =>
+            this.currentStep.set(
+              Math.max(Math.min(steps.length, currentIndex + inc), 0)
+            )
+          );
+      });
+
+      onCleanup(() => {
+        clearObs.next();
+        clearObs.complete();
+      });
+    });
+  }
 }
