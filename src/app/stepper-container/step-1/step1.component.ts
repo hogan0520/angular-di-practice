@@ -1,28 +1,25 @@
-import { Component, inject, TemplateRef, viewChild } from '@angular/core';
-import { Stepper } from '../stepper/stepper.component';
+import {
+  Component,
+  forwardRef,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
+import { StepToken } from '../model';
+import { FormsModule } from '@angular/forms';
+import { NextBtnDirective } from '../directive';
 
 @Component({
   selector: 'app-step-1',
-  imports: [],
+  imports: [FormsModule, NextBtnDirective],
+  providers: [{ provide: StepToken, useValue: forwardRef(() => Step1) }],
   templateUrl: './step1.component.html',
   styleUrl: './step1.component.scss',
 })
-export class Step1 {
-  private readonly stepper = inject(Stepper, {
-    optional: true,
-    host: true,
-  });
+export class Step1 extends StepToken {
+  title = 'Register';
+  readonly template = viewChild.required(TemplateRef);
 
-  private readonly templateRef = viewChild.required(TemplateRef);
-
-  constructor() {
-    this.stepper?.register({
-      title: 'Register',
-      template: this.templateRef,
-    });
-  }
-
-  onNext() {
-    this.stepper?.go(1);
-  }
+  protected userName = signal('');
+  protected password = signal('');
 }

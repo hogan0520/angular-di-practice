@@ -1,32 +1,15 @@
-import { Component, inject, TemplateRef, viewChild } from '@angular/core';
-import { Stepper } from '../stepper/stepper.component';
+import { Component, forwardRef, TemplateRef, viewChild } from '@angular/core';
+import { StepToken } from '../model';
+import { NextBtnDirective, PrevBtnDirective } from '../directive';
 
 @Component({
   selector: 'app-step-3',
-  imports: [],
+  imports: [PrevBtnDirective, NextBtnDirective],
+  providers: [{ provide: StepToken, useValue: forwardRef(() => Step3) }],
   templateUrl: './step3.component.html',
   styleUrl: './step3.component.scss',
 })
-export class Step3 {
-  private readonly stepper = inject(Stepper, {
-    optional: true,
-    host: true,
-  });
-
-  private readonly templateRef = viewChild.required(TemplateRef);
-
-  constructor() {
-    this.stepper?.register({
-      title: 'Final',
-      template: this.templateRef,
-    });
-  }
-
-  onNext() {
-    this.stepper?.go(1);
-  }
-
-  onPrev() {
-    this.stepper?.go(-1);
-  }
+export class Step3 extends StepToken {
+  title = 'Final';
+  readonly template = viewChild.required(TemplateRef);
 }

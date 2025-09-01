@@ -22,6 +22,7 @@
           minlength="3"
           maxlength="30"
           title="Only letters, numbers or dash"
+          [(ngModel)]="userName"
         />
       </label>
       <p class="validator-hint">
@@ -53,6 +54,7 @@
           minlength="8"
           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
           title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+          [(ngModel)]="password"
         />
       </label>
       <p class="validator-hint hidden">
@@ -63,6 +65,6 @@
   </div>
 
   <div class="flex justify-center">
-    <button class="btn btn-outline btn-primary" (click)="onNext()">Next</button>
+    <button class="btn btn-outline btn-primary" nextBtn>Next</button>
   </div>
 </ng-template>
