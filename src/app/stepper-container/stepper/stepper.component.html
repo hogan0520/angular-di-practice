@@ -1,11 +1,16 @@
 <ul class="steps">
-  @for (step of steps(); track step; let i = $index) {
-    <li class="step" [ngClass]="{'step-success font-bold text-green-500': i < currentStep()}">{{ step }}</li>
+  @for (step of $steps(); track step.title; let i = $index) {
+    <li class="step"
+        [ngClass]="{
+          'font-bold step-success  text-green-500': i<= $currentStepIndex(),
+        }"
+    >{{ step.title }}
+    </li>
   }
 </ul>
 
 <div class="divider"></div>
 
 <section>
-  <ng-content></ng-content>
+  <ng-container *ngTemplateOutlet="$currentStepTemplate()"></ng-container>
 </section>

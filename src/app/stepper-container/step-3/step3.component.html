@@ -1,14 +1,16 @@
-<div class="hero bg-base-200 min-h-80">
-  <div class="hero-content text-center">
-    <div class="max-w-md">
-      <h1 class="text-5xl font-bold">Congratulation!</h1>
-      <p class="py-6">
-        *★,°*:.☆(￣▽￣)/$:*.°★* 。
-      </p>
-      <div class="flex-col inline-flex gap-4">
-        <button class="btn btn-primary" (click)="nextStep.emit()">Finish</button>
-        <button class="btn btn-neutral btn-dash" (click)="preStep.emit()">Back</button>
+<ng-template>
+  <div class="hero bg-base-200 min-h-80">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">Congratulation!</h1>
+        <p class="py-6">
+          *★,°*:.☆(￣▽￣)/$:*.°★* 。
+        </p>
+        <div class="flex-col inline-flex gap-4">
+          <button class="btn btn-primary" (click)="onNext()">Finish</button>
+          <button class="btn btn-neutral btn-dash" (click)="onPrev()">Back</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>
