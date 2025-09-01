@@ -1,10 +1,4 @@
-import {
-  Component,
-  forwardRef,
-  signal,
-  TemplateRef,
-  viewChild,
-} from '@angular/core';
+import { Component, forwardRef, signal, TemplateRef, viewChild } from '@angular/core';
 import { StepToken } from '../model';
 import { FormsModule } from '@angular/forms';
 import { NextBtnDirective } from '../directive';
@@ -12,7 +6,7 @@ import { NextBtnDirective } from '../directive';
 @Component({
   selector: 'app-step-1',
   imports: [FormsModule, NextBtnDirective],
-  providers: [{ provide: StepToken, useValue: forwardRef(() => Step1) }],
+  providers: [{ provide: StepToken, useExisting: forwardRef(() => Step1) }],
   templateUrl: './step1.component.html',
   styleUrl: './step1.component.scss',
 })

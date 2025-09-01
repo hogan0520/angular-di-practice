@@ -5,7 +5,7 @@ import { NextBtnDirective, PrevBtnDirective } from '../directive';
 @Component({
   selector: 'app-step-3',
   imports: [PrevBtnDirective, NextBtnDirective],
-  providers: [{ provide: StepToken, useValue: forwardRef(() => Step3) }],
+  providers: [{ provide: StepToken, useExisting: forwardRef(() => Step3) }],
   templateUrl: './step3.component.html',
   styleUrl: './step3.component.scss',
 })
