@@ -1,11 +1,17 @@
-<app-stepper>
-  <app-step-1></app-step-1>
-  <app-step-2></app-step-2>
-  <app-step-3></app-step-3>
-</app-stepper>
+@if (stepperCompleted()) {
+  <h2>All Step Completed!</h2>
+} @else {
+  <app-stepper (completed)="onCompleted()">
+    <app-step-1></app-step-1>
+    <app-step-2></app-step-2>
+<!--    <app-nested-step></app-nested-step>-->
+    <app-step-3></app-step-3>
+  </app-stepper>
 
-<!--<app-new-stepper class="h-96">-->
-<!--  <app-step-1></app-step-1>-->
-<!--  <app-step-2></app-step-2>-->
-<!--  <app-step-3></app-step-3>-->
-<!--</app-new-stepper>-->
+  <!--<app-new-stepper class="h-96">-->
+    <!--  <app-step-1></app-step-1>-->
+    <!--  <app-step-2></app-step-2>-->
+    <!--  <app-step-3></app-step-3>-->
+    <!--</app-new-stepper>-->
+}
+

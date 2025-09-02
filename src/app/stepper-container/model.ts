@@ -1,4 +1,12 @@
-import { computed, inject, signal, Signal, TemplateRef } from '@angular/core';
+import {
+  computed,
+  effect,
+  inject,
+  OutputEmitterRef,
+  signal,
+  Signal,
+  TemplateRef,
+} from '@angular/core';
 
 export abstract class StepToken {
   abstract title: string;
@@ -15,23 +23,39 @@ export abstract class StepToken {
 }
 
 export abstract class StepperControl {
-  protected $steps = signal<StepToken[]>([]);
+  protected abstract readonly completed: OutputEmitterRef<void>;
 
-  protected $currentStepIndex = signal(0);
+  readonly $completed = signal(false);
+
+  protected readonly $steps = signal<StepToken[]>([]);
+
+  protected readonly $currentStepIndex = signal(0);
 
   private readonly $currentStep = computed(() => {
     return this.$steps().at(this.$currentStepIndex());
   });
 
-  protected $currentStepTemplate = computed(() =>
-    this.$currentStep()?.template() ?? null
+  protected readonly $currentStepTemplate = computed(
+    () => this.$currentStep()?.template() ?? null
   );
+
+  constructor() {
+    effect(() => {
+      if (this.$currentStepIndex() >= this.$steps().length) {
+        this.completed.emit();
+        this.$completed.set(true);
+      }
+    });
+  }
 
   register(step: StepToken) {
     this.$steps.set([...this.$steps(), step]);
   }
 
   go(count: 1 | -1) {
+    if (this.$completed()) {
+      return;
+    }
     this.$currentStepIndex.set(
       Math.max(
         Math.min(this.$steps().length, this.$currentStepIndex() + count),

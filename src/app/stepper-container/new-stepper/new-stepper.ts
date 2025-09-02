@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, output, OutputEmitterRef } from '@angular/core';
 import { StepperControl } from '../model';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
@@ -11,4 +11,6 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
   templateUrl: './new-stepper.html',
   styleUrl: './new-stepper.scss',
 })
-export class NewStepper extends StepperControl {}
+export class NewStepper extends StepperControl {
+  protected readonly completed: OutputEmitterRef<void> = output();
+}
