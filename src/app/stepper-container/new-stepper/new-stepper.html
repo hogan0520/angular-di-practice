@@ -1,0 +1,16 @@
+<ul class="steps steps-vertical">
+  @for (step of $steps(); track step.title; let i = $index) {
+    <li class="step"
+        [ngClass]="{
+          'font-bold step-success  text-green-500': i<= $currentStepIndex(),
+        }"
+    >{{ step.title }}
+    </li>
+  }
+</ul>
+
+<div class="divider divider-horizontal self-stretch mx-4"></div>
+
+<section class="flex-1">
+  <ng-container *ngTemplateOutlet="$currentStepTemplate()"></ng-container>
+</section>

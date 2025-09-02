@@ -9,5 +9,5 @@ import { StepperShower } from './stepper-shower/stepper-shower';
   styleUrl: './app.scss',
 })
 export class App {
-  protected title = 'angular-di-prictice';
+  protected title = 'angular-di-practice';
 }

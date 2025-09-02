@@ -10,5 +10,4 @@ import { Step3 } from './step-3/step3.component';
   templateUrl: './stepper-container.component.html',
   styleUrl: './stepper-container.component.scss',
 })
-export class StepperContainer {
-}
+export class StepperContainer {}

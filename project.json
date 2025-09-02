@@ -1,5 +1,5 @@
 {
-  "name": "angular-di-prictice",
+  "name": "angular-di-practice",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "includedScripts": [],
   "projectType": "application",
@@ -11,7 +11,7 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/angular-di-prictice",
+        "outputPath": "dist/angular-di-practice",
         "browser": "./src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "tsconfig.app.json",
@@ -53,10 +53,10 @@
       "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "angular-di-prictice:build:production"
+          "buildTarget": "angular-di-practice:build:production"
         },
         "development": {
-          "buildTarget": "angular-di-prictice:build:development"
+          "buildTarget": "angular-di-practice:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -64,7 +64,7 @@
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
       "options": {
-        "buildTarget": "angular-di-prictice:build"
+        "buildTarget": "angular-di-practice:build"
       }
     },
     "lint": {
@@ -77,8 +77,8 @@
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "angular-di-prictice:build",
-        "staticFilePath": "dist/angular-di-prictice/browser",
+        "buildTarget": "angular-di-practice:build",
+        "staticFilePath": "dist/angular-di-practice/browser",
         "spa": true
       }
     }
