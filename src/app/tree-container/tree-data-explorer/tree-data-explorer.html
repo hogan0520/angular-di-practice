@@ -1,3 +1,6 @@
+@if (!$loading()) {
+  <button class="btn btn-ghost btn-xs" (click)="toggleExpandDeep()">Toggle All</button>
+}
 <ul class="menu bg-base-200 rounded-box w-90">
   @if ($loading()) {
     <li>Loading wells <span class="loading loading-spinner loading-xs"></span></li>

@@ -9,9 +9,10 @@ export interface TreeNode {
 
 export interface TreeControl {
   readonly $treeNodes: Signal<TreeNode[]>;
-  readonly $expand: Signal<boolean>
+  readonly $expand: Signal<boolean>;
   toggleExpand(): void;
-  registerNode(node: TreeNode): void
+  registerNode(node: TreeNode): void;
+  toggleExpandDeep(): void;
 }
 
 export const TREE_NODE_TOKEN = new InjectionToken<TreeNode>('Tree Node');
@@ -29,7 +30,6 @@ function mixTreeLeaf<T extends Constructor>(c: T) {
     });
     readonly uuid = `${treeNodeId++}`;
 
-     
     protected constructor(...args: any[]) {
       super(...args);
       this.treeControl.registerNode(this);
@@ -41,7 +41,7 @@ function mixTreeLeaf<T extends Constructor>(c: T) {
 
 function mixTreeRoot<T extends Constructor>(c: T) {
   abstract class TreeRoot extends c implements TreeControl {
-    protected readonly $_expand = signal(true);
+    protected readonly $_expand = signal(false);
     protected readonly $_treeNodes = signal<TreeNode[]>([]);
 
     readonly $treeNodes = this.$_treeNodes.asReadonly();
@@ -52,7 +52,14 @@ function mixTreeRoot<T extends Constructor>(c: T) {
     }
 
     registerNode(node: TreeNode) {
-      this.$_treeNodes.set([...this.$_treeNodes(), node])
+      this.$_treeNodes.set([...this.$_treeNodes(), node]);
+    }
+
+    toggleExpandDeep() {
+      this.toggleExpand();
+      this.$treeNodes().filter(node => (node as any).toggleExpandDeep).forEach((node) => {
+        (node as any).toggleExpandDeep();
+      })
     }
   }
 
