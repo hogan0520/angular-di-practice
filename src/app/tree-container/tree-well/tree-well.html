@@ -1,0 +1,21 @@
+@if ($loading()) {
+  <span>Loading well <span class="loading loading-spinner loading-xs"></span></span>
+} @else if ($well()) {
+  @if ($well()?.channels?.length || $well()?.wellbores?.length) {
+    <details open>
+      <summary>{{ $well()?.name }}</summary>
+      <ul>
+        @for (wellbore of $well()?.wellbores; track wellbore) {
+          <li><app-tree-wellbore [wellboreId]="wellbore"></app-tree-wellbore></li>
+        }
+        @for (channel of $well()?.channels; track channel) {
+          <li><app-tree-channel [channelId]="channel"></app-tree-channel></li>
+        }
+      </ul>
+    </details>
+  } @else {
+    <span>{{$well()?.name}}</span>
+  }
+} @else {
+  <span>No Well Info</span>
+}

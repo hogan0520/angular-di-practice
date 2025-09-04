@@ -1,0 +1,39 @@
+@if ($loading()) {
+  <span>Loading wellbore <span class="loading loading-spinner loading-xs"></span></span>
+} @else if ($wellbore()) {
+  @if ($wellbore()?.channels?.length) {
+    <details open>
+      <summary>
+        <span class="inline-flex items-center gap-1">
+          {{ $wellbore()?.name }}
+          <div class="badge badge-soft badge-sm" [ngClass]="{
+          'badge-info': $wellbore()?.status === 'normal',
+          'badge-success': $wellbore()?.status === 'active',
+          'badge-warning': $wellbore()?.status === 'pending',
+          }">{{ $wellbore()?.status | uppercase }}
+          </div>
+        </span>
+      </summary>
+
+      <ul>
+        @for (channel of $wellbore()?.channels; track channel) {
+          <li>
+            <app-tree-channel [channelId]="channel"></app-tree-channel>
+          </li>
+        }
+      </ul>
+    </details>
+  } @else {
+    <span class="flex items-center gap-1">
+      {{ $wellbore()?.name }}
+      <div class="badge badge-soft badge-sm" [ngClass]="{
+        'badge-info': $wellbore()?.status === 'normal',
+        'badge-success': $wellbore()?.status === 'active',
+        'badge-warning': $wellbore()?.status === 'pending',
+        }">{{ $wellbore()?.status | uppercase }}
+        </div>
+    </span>
+  }
+} @else {
+  <span>No Wellbore Info</span>
+}

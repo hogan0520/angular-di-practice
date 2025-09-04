@@ -1,0 +1,10 @@
+@if ($loading()) {
+  <span>Loading channel <span class="loading loading-spinner loading-xs"></span></span>
+} @else if ($channel()) {
+  <span class="flex items-center gap-1">
+    {{ $channel()?.name }}
+    <div class="badge badge-sm badge-info">{{ $channel()?.type | uppercase }}</div>
+  </span>
+} @else {
+  <span>No Channel Info</span>
+}

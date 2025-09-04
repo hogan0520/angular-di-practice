@@ -1,0 +1,9 @@
+<ul class="menu bg-base-200 rounded-box w-90">
+  @if ($loading()) {
+    <li>Loading wells <span class="loading loading-spinner loading-xs"></span></li>
+  } @else {
+    @for (well of $wells(); track well.id) {
+      <app-tree-well [wellId]="well.id"></app-tree-well>
+    }
+  }
+</ul>
