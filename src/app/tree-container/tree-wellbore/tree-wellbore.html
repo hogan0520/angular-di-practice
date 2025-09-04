@@ -2,7 +2,7 @@
   <span>Loading wellbore <span class="loading loading-spinner loading-xs"></span></span>
 } @else if ($wellbore()) {
   @if ($wellbore()?.channels?.length) {
-    <details [attr.open]="$expand() ? 'true' : null" (toggle)="toggleExpand()">
+    <details [attr.open]="$expanded() ? 'true' : null" (toggle)="onToggle($event)">
       <summary>
         <span class="inline-flex items-center gap-1">
           {{ $wellbore()?.name }}
@@ -15,7 +15,7 @@
         </span>
       </summary>
 
-      @if ($expand()) {
+      @if ($expanded()) {
         <ul>
           @for (channel of $wellbore()?.channels; track channel) {
             <li>

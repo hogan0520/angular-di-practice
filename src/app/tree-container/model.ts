@@ -1,4 +1,10 @@
-import { inject, InjectionToken, Signal, signal } from '@angular/core';
+import {
+  computed,
+  inject,
+  InjectionToken,
+  Signal,
+  signal,
+} from '@angular/core';
 
 let treeNodeId = 0;
 
@@ -8,11 +14,19 @@ export interface TreeNode {
 }
 
 export interface TreeControl {
-  readonly $treeNodes: Signal<TreeNode[]>;
-  readonly $expand: Signal<boolean>;
+  readonly $treeNodesChildren: Signal<TreeNode[]>;
+  readonly $treeControlChildren: Signal<TreeControl[]>;
+  readonly $expanded: Signal<boolean>;
+  readonly $deepExpanded: Signal<boolean>;
+  readonly $deepCollapsed: Signal<boolean>;
   toggleExpand(): void;
   registerNode(node: TreeNode): void;
-  toggleExpandDeep(): void;
+  expandDeep(): void;
+  collapseDeep(): void;
+}
+
+function isTreeControl(node: TreeNode | TreeControl): node is TreeControl {
+  return !!(node as Partial<TreeControl>).$expanded;
 }
 
 export const TREE_NODE_TOKEN = new InjectionToken<TreeNode>('Tree Node');
@@ -42,10 +56,34 @@ function mixTreeLeaf<T extends Constructor>(c: T) {
 function mixTreeRoot<T extends Constructor>(c: T) {
   abstract class TreeRoot extends c implements TreeControl {
     protected readonly $_expand = signal(false);
-    protected readonly $_treeNodes = signal<TreeNode[]>([]);
+    protected readonly $_treeNodes = signal<
+      (TreeNode | (TreeNode & TreeControl))[]
+    >([]);
 
-    readonly $treeNodes = this.$_treeNodes.asReadonly();
-    readonly $expand = this.$_expand.asReadonly();
+    readonly $treeNodesChildren = this.$_treeNodes.asReadonly();
+    readonly $treeControlChildren: Signal<TreeControl[]> = computed(() =>
+      this.$treeNodesChildren().filter((node) => isTreeControl(node))
+    );
+
+    readonly $expanded = this.$_expand.asReadonly();
+
+    readonly $deepExpanded = computed(() => {
+      return (
+        this.$expanded() &&
+        this.$treeControlChildren().every((control: TreeControl) =>
+          control.$deepExpanded()
+        )
+      );
+    });
+
+    readonly $deepCollapsed = computed(() => {
+      return (
+        !this.$expanded() &&
+        this.$treeControlChildren().every((control: TreeControl) =>
+          control.$deepCollapsed()
+        )
+      );
+    });
 
     toggleExpand(): void {
       this.$_expand.set(!this.$_expand());
@@ -55,11 +93,18 @@ function mixTreeRoot<T extends Constructor>(c: T) {
       this.$_treeNodes.set([...this.$_treeNodes(), node]);
     }
 
-    toggleExpandDeep() {
-      this.toggleExpand();
-      this.$treeNodes().filter(node => (node as any).toggleExpandDeep).forEach((node) => {
-        (node as any).toggleExpandDeep();
-      })
+    expandDeep() {
+      this.$treeControlChildren().forEach((node: TreeControl) => {
+        node.expandDeep();
+      });
+      this.$_expand.set(true);
+    }
+
+    collapseDeep() {
+      this.$treeControlChildren().forEach((node: TreeControl) => {
+        node.collapseDeep();
+      });
+      this.$_expand.set(false);
     }
   }
 

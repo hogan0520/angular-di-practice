@@ -1,5 +1,10 @@
 @if (!$loading()) {
-  <button class="btn btn-ghost btn-xs" (click)="toggleExpandDeep()">Toggle All</button>
+  @if (!$deepExpanded()) {
+    <button class="btn btn-ghost btn-xs" (click)="expandDeep()">Expand All</button>
+  }
+  @if (!$deepCollapsed()) {
+    <button class="btn btn-ghost btn-xs" (click)="collapseDeep()">Collapsed All</button>
+  }
 }
 <ul class="menu bg-base-200 rounded-box w-90">
   @if ($loading()) {

@@ -31,4 +31,15 @@ export class TreeWellbore extends TreeBranch {
 
   readonly $wellbore = this.wellboreResource.asReadonly().value;
   readonly $loading = this.wellboreResource.isLoading;
+
+  onToggle(e: Event) {
+    const event = e as ToggleEvent;
+    if (
+      (event.newState === 'open' && this.$expanded()) ||
+      (event.newState === 'close' && !this.$expanded())
+    ) {
+      return;
+    }
+    this.toggleExpand();
+  }
 }
