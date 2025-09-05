@@ -1,10 +1,5 @@
 import { Component, forwardRef, input } from '@angular/core';
-import {
-  TREE_CONTROL_TOKEN,
-  TREE_NODE_TOKEN,
-  TreeBranch,
-  Well,
-} from '../model';
+import { TREE_CONTROL_TOKEN, TREE_NODE_TOKEN, TreeBranch, Well } from '../model';
 import { httpResource } from '@angular/common/http';
 import { TreeWellbore } from '../tree-wellbore/tree-wellbore';
 import { TreeChannel } from '../tree-channel/tree-channel';
@@ -33,7 +28,7 @@ export class TreeWell extends TreeBranch {
     const event = e as ToggleEvent;
     if (event.newState === 'open' && !this.$expanded()) {
       this.expand();
-    } else if (event.newState === 'close' && this.$expanded()) {
+    } else if (event.newState === 'closed' && this.$expanded()) {
       this.collapse();
     }
   }

@@ -5,7 +5,7 @@
     <details [attr.open]="$expanded() ? 'true' : null" (toggle)="onToggle($event)">
       <summary>
         <span class="inline-flex items-center">
-          {{ $well()?.name }}
+          {{ $well()?.name }} ({{($well()?.wellbores?.length ?? 0) + ($well()?.channels?.length ?? 0)}})
           <div class="inline-flex items-center gap-1">
             @if (!$loading()) {
               @if (!$deepExpanded()) {

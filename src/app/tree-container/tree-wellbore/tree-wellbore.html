@@ -5,7 +5,7 @@
     <details [attr.open]="$expanded() ? 'true' : null" (toggle)="onToggle($event)">
       <summary>
         <span class="inline-flex items-center gap-1">
-          {{ $wellbore()?.name }}
+          {{ $wellbore()?.name }} ({{$wellbore()?.channels?.length}})
           <div class="badge badge-soft badge-sm" [ngClass]="{
           'badge-info': $wellbore()?.status === 'normal',
           'badge-success': $wellbore()?.status === 'active',
