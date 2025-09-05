@@ -34,12 +34,10 @@ export class TreeWellbore extends TreeBranch {
 
   onToggle(e: Event) {
     const event = e as ToggleEvent;
-    if (
-      (event.newState === 'open' && this.$expanded()) ||
-      (event.newState === 'close' && !this.$expanded())
-    ) {
-      return;
+    if (event.newState === 'open' && !this.$expanded()) {
+      this.expand();
+    } else if (event.newState === 'close' && this.$expanded()) {
+      this.collapse();
     }
-    this.toggleExpand();
   }
 }

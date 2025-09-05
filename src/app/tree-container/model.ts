@@ -1,10 +1,4 @@
-import {
-  computed,
-  inject,
-  InjectionToken,
-  Signal,
-  signal,
-} from '@angular/core';
+import { computed, inject, InjectionToken, Signal, signal } from '@angular/core';
 
 let treeNodeId = 0;
 
@@ -19,10 +13,11 @@ export interface TreeControl {
   readonly $expanded: Signal<boolean>;
   readonly $deepExpanded: Signal<boolean>;
   readonly $deepCollapsed: Signal<boolean>;
-  toggleExpand(): void;
   registerNode(node: TreeNode): void;
   expandDeep(): void;
   collapseDeep(): void;
+  expand(): void;
+  collapse(): void;
 }
 
 function isTreeControl(node: TreeNode | TreeControl): node is TreeControl {
@@ -85,8 +80,12 @@ function mixTreeRoot<T extends Constructor>(c: T) {
       );
     });
 
-    toggleExpand(): void {
-      this.$_expand.set(!this.$_expand());
+    expand(): void {
+      this.$_expand.set(true);
+    }
+
+    collapse(): void {
+      this.$_expand.set(false);
     }
 
     registerNode(node: TreeNode) {
@@ -111,11 +110,17 @@ function mixTreeRoot<T extends Constructor>(c: T) {
   return TreeRoot;
 }
 
-export abstract class TreeRoot extends mixTreeRoot(Object) {}
+export abstract class TreeRoot
+  extends mixTreeRoot(Object)
+  implements TreeControl {}
 
-export abstract class TreeLeaf extends mixTreeLeaf(Object) {}
+export abstract class TreeLeaf
+  extends mixTreeLeaf(Object)
+  implements TreeNode {}
 
-export abstract class TreeBranch extends mixTreeLeaf(mixTreeRoot(Object)) {}
+export abstract class TreeBranch
+  extends mixTreeLeaf(mixTreeRoot(Object))
+  implements TreeControl, TreeNode {}
 
 // export abstract class TreeRoot implements TreeControl {
 //   protected readonly $_expand = signal(true);

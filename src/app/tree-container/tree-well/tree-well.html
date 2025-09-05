@@ -3,20 +3,38 @@
 } @else if ($well()) {
   @if ($well()?.channels?.length || $well()?.wellbores?.length) {
     <details [attr.open]="$expanded() ? 'true' : null" (toggle)="onToggle($event)">
-      <summary>{{ $well()?.name }}</summary>
+      <summary>
+        <span class="inline-flex items-center">
+          {{ $well()?.name }}
+          <div class="inline-flex items-center gap-1">
+            @if (!$loading()) {
+              @if (!$deepExpanded()) {
+                <button class="btn btn-xs btn-square" (click)="expandDeep()">⇱</button>
+              }
+              @if (!$deepCollapsed()) {
+                <button class="btn btn-xs btn-square" (click)="collapseDeep()">⇲</button>
+              }
+            }
+          </div>
+        </span>
+      </summary>
       @if ($expanded()) {
         <ul>
           @for (wellbore of $well()?.wellbores; track wellbore) {
-            <li><app-tree-wellbore [wellboreId]="wellbore"></app-tree-wellbore></li>
+            <li>
+              <app-tree-wellbore [wellboreId]="wellbore"></app-tree-wellbore>
+            </li>
           }
           @for (channel of $well()?.channels; track channel) {
-            <li><app-tree-channel [channelId]="channel"></app-tree-channel></li>
+            <li>
+              <app-tree-channel [channelId]="channel"></app-tree-channel>
+            </li>
           }
         </ul>
       }
     </details>
   } @else {
-    <span>{{$well()?.name}}</span>
+    <span>{{ $well()?.name }}</span>
   }
 } @else {
   <span>No Well Info</span>
