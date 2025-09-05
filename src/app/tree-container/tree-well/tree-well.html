@@ -9,10 +9,14 @@
           <div class="inline-flex items-center gap-1">
             @if (!$loading()) {
               @if (!$deepExpanded()) {
-                <button class="btn btn-xs btn-square" (click)="expandDeep()">⇱</button>
+                <div class="tooltip" data-tip="Expand All">
+                  <button class="btn btn-xs btn-square" (click)="expandDeep()">⇱</button>
+                </div>
               }
               @if (!$deepCollapsed()) {
-                <button class="btn btn-xs btn-square" (click)="collapseDeep()">⇲</button>
+                <div class="tooltip" data-tip="Collapse All">
+                  <button class="btn btn-xs btn-square" (click)="collapseDeep()">⇲</button>
+                </div>
               }
             }
           </div>

@@ -1,4 +1,4 @@
-import { computed, inject, InjectionToken, Signal, signal } from '@angular/core';
+import { computed, DestroyRef, inject, InjectionToken, Signal, signal } from '@angular/core';
 
 let treeNodeId = 0;
 
@@ -14,6 +14,7 @@ export interface TreeControl {
   readonly $deepExpanded: Signal<boolean>;
   readonly $deepCollapsed: Signal<boolean>;
   registerNode(node: TreeNode): void;
+  unregisterNode(node: TreeNode): void;
   expandDeep(): void;
   collapseDeep(): void;
   expand(): void;
@@ -33,6 +34,7 @@ type Constructor = new (...args: any[]) => object;
 
 function mixTreeLeaf<T extends Constructor>(c: T) {
   abstract class TreeLeaf extends c implements TreeNode {
+    private readonly destoryRef = inject(DestroyRef);
     readonly treeControl = inject(TREE_CONTROL_TOKEN, {
       skipSelf: true,
       optional: false,
@@ -42,6 +44,7 @@ function mixTreeLeaf<T extends Constructor>(c: T) {
     protected constructor(...args: any[]) {
       super(...args);
       this.treeControl.registerNode(this);
+      this.destoryRef.onDestroy(() => this.treeControl.unregisterNode(this));
     }
   }
 
@@ -89,7 +92,19 @@ function mixTreeRoot<T extends Constructor>(c: T) {
     }
 
     registerNode(node: TreeNode) {
-      this.$_treeNodes.set([...this.$_treeNodes(), node]);
+      const nodes = this.$_treeNodes();
+      if (nodes.findIndex((item: TreeNode) => item.uuid === node.uuid) < 0) {
+        this.$_treeNodes.set([...this.$_treeNodes(), node]);
+      }
+    }
+
+    unregisterNode(node: TreeNode) {
+      const nodes = this.$_treeNodes();
+      const index = nodes.findIndex(
+        (item: TreeNode) => item.uuid === node.uuid
+      );
+      nodes.splice(index, 1);
+      this.$_treeNodes.set(nodes);
     }
 
     expandDeep() {
